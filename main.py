@@ -20,6 +20,8 @@ songs_data = pd.read_csv("spotify_millsongdata.csv")
 
 songs_data = songs_data.drop_duplicates(subset=["song", "artist"])
 
+songs_data = songs_data.sample(n=3000, random_state=42)
+
 songs_data.reset_index(drop=True, inplace=True)
 
 selected_features = ["artist", "song", "text"]
@@ -85,3 +87,4 @@ def recommend(request: SongRequest):
         "matched_song": close_match,
         "recommendations": recommendations
     }
+
