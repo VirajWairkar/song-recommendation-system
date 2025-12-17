@@ -6,9 +6,6 @@ import pandas as pd
 from fastapi.middleware.cors import CORSMiddleware
 import difflib
 
-feature_vectors = None
-vectorizer = None
-
 app = FastAPI()
 
 app.add_middleware(
@@ -36,19 +33,14 @@ songs_data["text"] = songs_data["text"].str.lower()
 
 combined_features = songs_data["artist"]+' '+songs_data["song"]+' '+songs_data["text"]
 
+vectorizer = TfidfVectorizer(stop_words='english')
+
+feature_vectors = vectorizer.fit_transform(combined_features)
+
 list_of_all_songs = songs_data['song'].tolist()
 
 class SongRequest(BaseModel):
   song: str
-
-@app.on_event("startup")
-def load_model():
-    global feature_vectors, vectorizer
-
-    vectorizer = TfidfVectorizer(stop_words="english")
-    feature_vectors = vectorizer.fit_transform(combined_features)
-
-    print("✅ Model loaded successfully")
 
 @app.get("/")
 def root():
@@ -93,4 +85,3 @@ def recommend(request: SongRequest):
         "matched_song": close_match,
         "recommendations": recommendations
     }
-
