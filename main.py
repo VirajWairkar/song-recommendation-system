@@ -76,7 +76,6 @@ def recommend(request: SongRequest):
 
     for i, song in enumerate(sorted_similar_songs[1:30]):
         index = song[0]
-        title_from_index = songs_data['song'].values[index]
         recommendations.append({
            "song": songs_data['song'].values[index],
            "artist": songs_data['artist'].values[index]
