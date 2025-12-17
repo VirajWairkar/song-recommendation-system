@@ -28,6 +28,8 @@ for feature in selected_features:
   songs_data[feature] = songs_data[feature].fillna("")
 
 songs_data['song'] = songs_data['song'].str.lower()
+songs_data["artist"] = songs_data["artist"].str.lower()
+songs_data["text"] = songs_data["text"].str.lower()
 
 combined_features = songs_data["artist"]+' '+songs_data["song"]+' '+songs_data["text"]
 
